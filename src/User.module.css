@@ -1,0 +1,27 @@
+.result {
+  border-radius: 25px;
+  display: flex;
+  gap: 20px;
+  cursor: pointer;
+  background-color: #282a2c;
+  max-width: 100%;
+  padding: 3px 20px;
+}
+
+.result img {
+  width: 50px;
+  border-radius: 3px;
+}
+
+.result button {
+  padding: 3px 10px;
+}
+
+.result button a {
+  color: #000;
+  text-decoration: none;
+}
+
+.result button a:hover {
+  opacity: 0.8;
+}

@@ -1,6 +1,6 @@
 .option {
   border: 2px solid #1e1f20;
-  min-width: 450px;
+  width: 450px;
   cursor: pointer;
   text-align: left;
   font-size: 1rem;
@@ -23,6 +23,17 @@
   background-color: #2e2f2f;
 }
 
+.optionText {
+  /* style={{ display: "flex", gap: "10px" }} */
+  display: flex;
+  gap: 10px;
+  line-height: 1.2;
+}
+
+.text {
+  line-height: 1.2;
+}
+
 .code {
   font-family: "Google Sans Flex", sans-serif;
   font-weight: 400;
@@ -32,4 +43,10 @@
   background-color: #282a2c;
   border-radius: 6px;
   padding: 1px 6px;
+}
+
+.disc {
+  line-height: 1.2;
+  display: block;
+  margin-top: 20px;
 }

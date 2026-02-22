@@ -1,0 +1,73 @@
+.userContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  background-color: #ffffff;
+  max-width: 350px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  margin-right: 16px;
+  object-fit: cover;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  margin: 0 0 2px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.username {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #57606a;
+  text-decoration: none;
+}
+
+.username:hover {
+  text-decoration: underline;
+  color: #0969da;
+}
+
+.bio {
+  margin: 0;
+  font-size: 13px;
+  color: #24292f;
+  line-height: 1.4;
+}
+
+.startBtn {
+  padding: 12px 24px;
+  border-radius: 100px;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    opacity 0.2s;
+}

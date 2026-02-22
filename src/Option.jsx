@@ -32,7 +32,20 @@ function Option({ question, option, answer, i, dispatch }) {
       onClick={() => dispatch({ type: "setAnswer", payLoad: i })}
       className={className}
     >
-      <span>{option.id}. </span> {formatText(option.text, styles)}
+      <div className={styles.optionText}>
+        <span>{option.id}. </span>{" "}
+        <div>
+          <p className={styles.text}>{formatText(option.text, styles)}</p>
+
+          {/* Message logic */}
+
+          {isAnswered && isCorrect && (
+            <p className={styles.disc}>
+              {isCorrect && formatText(question.explanation, styles)}
+            </p>
+          )}
+        </div>
+      </div>
     </button>
   );
 }
