@@ -22,3 +22,14 @@
 .option:hover {
   background-color: #2e2f2f;
 }
+
+.code {
+  font-family: "Google Sans Flex", sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  letter-spacing: 0rem;
+  color: #c4c7c5;
+  background-color: #282a2c;
+  border-radius: 6px;
+  padding: 1px 6px;
+}

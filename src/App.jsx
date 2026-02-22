@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import Header from "./Header";
 import Question from "./Question";
+import Hint from "./Hint";
 
 const questions = [
   {
@@ -129,6 +130,7 @@ const initialState = {
   correctScore: 0,
   points: 0,
   wrongScore: 0,
+  hintExpanded: false,
 };
 
 function reducer(state, action) {
@@ -139,6 +141,7 @@ function reducer(state, action) {
         index: state.index + 1,
         selectionAllowed: true,
         answer: null,
+        hintExpanded: false,
       };
     case "setAnswer": {
       if (!state.selectionAllowed) return state;
@@ -149,7 +152,7 @@ function reducer(state, action) {
       return {
         ...state,
         selectionAllowed: false,
-        answer: state.selectionAllowed ? action.payLoad : state.answer,
+        answer: state.selectionAllowed ? action.payLoad : null,
 
         points: isCorrect ? state.points + currentQueston.points : state.points,
         correctScore: isCorrect ? state.correctScore + 1 : state.correctScore,
@@ -157,12 +160,27 @@ function reducer(state, action) {
         wrongScore: !isCorrect ? state.wrongScore + 1 : state.wrongScore,
       };
     }
+    case "handleHint":
+      return {
+        ...state,
+        hintExpanded: !state.hintExpanded,
+      };
   }
 }
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, answer, index, correctScore, wrongScore, points } = state;
+  const {
+    questions,
+    answer,
+    index,
+    correctScore,
+    wrongScore,
+    points,
+    selectionAllowed,
+    hintExpanded,
+  } = state;
+
   const questionsCount = questions.length;
   return (
     <>
@@ -185,13 +203,19 @@ function App() {
           <div className="timerContainer">
             <p className="timer">00:00</p>
             <button
-              disabled={!answer}
+              disabled={selectionAllowed}
               className="next"
               onClick={() => dispatch({ type: "nextQuestion" })}
             >
               {index === questionsCount - 1 ? "Finish" : "Next"}
             </button>
           </div>
+
+          <Hint
+            hint={questions.at(index).hint}
+            hintExpanded={hintExpanded}
+            dispatch={dispatch}
+          />
         </main>
       </div>
     </>
