@@ -1,0 +1,54 @@
+.mainHeader {
+  display: flex;
+}
+
+.barContainer {
+  flex-grow: 1;
+  padding: 35px 10px 35px 35px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bar {
+  border-radius: 2px;
+  background-color: #333537;
+  height: 5px;
+  flex-grow: 1;
+  transition: all 0.2s ease;
+}
+
+.barDone {
+  background-color: #a8c7fa;
+}
+
+.barActive {
+  height: 8px;
+  border-radius: 8px;
+}
+
+.scoreContainer {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.correctContainer,
+.wrongContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 14px 0;
+  padding: 0px 30px;
+  border-radius: 20px;
+  font-size: 20px;
+}
+
+.correctContainer {
+  background-color: #0f5223;
+}
+
+.wrongContainer {
+  background-color: #601410;
+}
