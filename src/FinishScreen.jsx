@@ -13,10 +13,12 @@ function FinishScreen({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // NEW STATE: Tracks if the modal is open in simple mode
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const hasSubmitted = useRef(false);
 
   useEffect(() => {
-    // --- MODE 1: SIMPLE FETCH ONLY (No props required) ---
     if (isSimple) {
       const fetchOnly = async () => {
         try {
@@ -24,8 +26,6 @@ function FinishScreen({
           const getRes = await fetch(API_URL);
           if (!getRes.ok) throw new Error("Failed to fetch leaderboard.");
           const data = await getRes.json();
-
-          // Sort highest points first
           const sorted = data.sort((a, b) => b.points - a.points);
           setLeaderboard(sorted);
         } catch (err) {
@@ -34,12 +34,10 @@ function FinishScreen({
           setIsLoading(false);
         }
       };
-
       fetchOnly();
-      return; // Stop here so it doesn't try to save anything
+      return;
     }
 
-    // --- MODE 2: FULL FINISH SCREEN (Requires user data to save) ---
     if (!selectedUserDetals) {
       setError("No user details provided.");
       setIsLoading(false);
@@ -89,24 +87,102 @@ function FinishScreen({
   }, [isSimple, points, selectedUserDetals, totalPoints]);
 
   // ==========================================
-  // RENDER: Simple Mode (Bottom of Quiz)
-  // Usage: <FinishScreen isSimple={true} />
+  // RENDER: Simple Mode (Bottom Bar + Modal)
   // ==========================================
   if (isSimple) {
     return (
-      <div className="simple-leaderboard">
-        <span className="simple-title">🏆 Top Scores:</span>
-        {isLoading && <span className="simple-text">Loading...</span>}
-        {!isLoading &&
-          leaderboard.slice(0, 3).map((user, i) => (
-            <div key={user.id || i} className="simple-item">
-              <span className="simple-rank">#{i + 1}</span>
-              <img src={user.avatar} alt="avatar" className="simple-avatar" />
-              <span className="simple-name">{user.username}</span>
-              <span className="simple-score">{user.points} pts</span>
+      <>
+        {/* The Bottom Bar */}
+        <div className="simple-leaderboard">
+          {/* Arrow Button to open Modal */}
+          <button
+            className="modal-toggle-btn"
+            onClick={() => setIsModalOpen(true)}
+            title="Open Leaderboard"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m18 15-6-6-6 6" />
+            </svg>
+          </button>
+
+          <span className="simple-title">🏆 Top Scores:</span>
+          {isLoading && <span className="simple-text">Loading...</span>}
+          {!isLoading &&
+            leaderboard.slice(0, 3).map((user, i) => (
+              <div key={user.id || i} className="simple-item">
+                <span className="simple-rank">#{i + 1}</span>
+                <img src={user.avatar} alt="avatar" className="simple-avatar" />
+                <span className="simple-name">
+                  <a
+                    style={{ textDecoration: "none" }}
+                    href={user.html_url}
+                    target="_blank"
+                  >
+                    {user.username}
+                  </a>
+                </span>
+                <span className="simple-score">{user.points} pts</span>
+              </div>
+            ))}
+        </div>
+
+        {/* The Modal Overlay (Only renders if isModalOpen is true) */}
+        {isModalOpen && (
+          <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+            {/* Modal Content Box (stopPropagation prevents closing when clicking inside the box) */}
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3>🏆 Top 10 Leaderboard</h3>
+                <button
+                  className="modal-close-btn"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="modal-body">
+                <ul className="leaderboard-list">
+                  {/* Slices the top 10 users for the modal */}
+                  {leaderboard.slice(0, 10).map((user, index) => (
+                    <li key={user.id || index} className="leaderboard-item">
+                      <div className="rank-and-user">
+                        <span className="rank">#{index + 1}</span>
+                        <img
+                          src={user.avatar}
+                          alt="avatar"
+                          className="user-avatar-small"
+                        />
+                        <div className="user-info">
+                          <span className="user-name">{user.name}</span>
+                          <span className="user-username">
+                            <a href={user.html_url} target="_blank">
+                              @{user.username}
+                            </a>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="user-score">
+                        <strong>{user.points}</strong> pts
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          ))}
-      </div>
+          </div>
+        )}
+      </>
     );
   }
 
@@ -141,7 +217,7 @@ function FinishScreen({
 
         {!isLoading && !error && (
           <>
-            {/* --- OLYMPIC PODIUM --- */}
+            {/* OLYMPIC PODIUM */}
             {topThree.length > 0 && (
               <div className="podium-wrapper">
                 {topThree[1] && (
@@ -185,15 +261,13 @@ function FinishScreen({
               </div>
             )}
 
-            {/* --- REST OF LIST --- */}
+            {/* REST OF LIST */}
             <ul className="leaderboard-list mt-top">
               {restOfLeaderboard.map((user, index) => {
                 const actualRank = index + 4;
                 const isCurrentUser =
                   user.githubId === selectedUserDetals?.id &&
                   user.points === points;
-
-                if (actualRank >= 11) return null;
 
                 return (
                   <li
@@ -209,7 +283,11 @@ function FinishScreen({
                       />
                       <div className="user-info">
                         <span className="user-name">{user.name}</span>
-                        <span className="user-username">@{user.username}</span>
+                        <span className="user-username">
+                          <a href={user.html_url} target="_blank">
+                            @{user.username}
+                          </a>
+                        </span>
                       </div>
                     </div>
                     <div className="user-score">
