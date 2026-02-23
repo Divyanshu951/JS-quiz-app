@@ -74,3 +74,15 @@ body {
   align-items: center;
   gap: 40px;
 }
+
+.conatct {
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 100;
+}
+
+.fa-brands {
+  color: #fff;
+  transform: scale(2);
+}

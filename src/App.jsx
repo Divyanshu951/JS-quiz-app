@@ -90,6 +90,14 @@ function App() {
   const questionsCount = questions.length;
   return (
     <>
+      <div className="conatct">
+        <a
+          href="https://www.linkedin.com/in/divyanshu-357240165/"
+          target="_blank"
+        >
+          <i className="fa-brands fa-linkedin"></i>
+        </a>
+      </div>
       {status === "ready" && (
         <>
           <StartScreen
