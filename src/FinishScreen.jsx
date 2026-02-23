@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./FinishScreen.css";
+const API_URL_ENV = import.meta.env.VITE_API_URL;
 
-const API_URL = "https://699badac110b5b738cc07f41.mockapi.io/leaderboard";
+const API_URL = `${API_URL_ENV}/leaderboard`;
 
 function FinishScreen({
   points,
