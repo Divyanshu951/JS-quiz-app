@@ -33,7 +33,16 @@ function Option({ question, option, answer, i, dispatch }) {
       className={className}
     >
       <div className={styles.optionText}>
-        <span>{option.id}. </span>{" "}
+        <span>
+          {option.id === 0
+            ? "A"
+            : option.id === 1
+              ? "B"
+              : option.id === 2
+                ? "C"
+                : "D"}
+          .{" "}
+        </span>{" "}
         <div>
           <p className={styles.text}>{formatText(option.text, styles)}</p>
 

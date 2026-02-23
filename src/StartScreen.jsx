@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./StartScreen.module.css";
 import User from "./User";
 import SelectedUser from "./SelectedUser";
+import FinishScreen from "./FinishScreen";
 
 //https://api.github.com/search/users?q=QUERY
 
@@ -15,36 +16,50 @@ const topics = [
   "polyfill",
 ];
 
-function StartScreen({ dispatch }) {
-  const [query, setQuery] = useState("");
-  const [fetchedUsers, setFetchedUsers] = useState([]);
+function StartScreen({
+  dispatch,
+  query,
+  fetchedUsers,
+  setFetchedUsers,
+  setQuery,
+  setSelecteduserDetals,
+  selectedUserDetals,
+}) {
   const [selectedUser, setSelecteduser] = useState(null);
 
-  useEffect(
-    function () {
-      async function fetchUsers() {
-        if (query.length <= 3) return;
+  useEffect(() => {
+    const controller = new AbortController();
 
-        try {
-          const res = await fetch(
-            `https://api.github.com/search/users?q=${query}`,
-          );
-          if (!res.ok) throw new Error("Something went wrong!");
+    async function fetchUsers() {
+      if (query.length <= 3) return;
 
-          const data = await res.json();
-          if (data.incomplete_results)
-            throw new Error("Something went wrong with github!");
+      try {
+        const res = await fetch(
+          `https://api.github.com/search/users?q=${query}`,
+          { signal: controller.signal },
+        );
 
-          // console.log(data);
-          setFetchedUsers([...data.items]);
-        } catch (err) {
+        if (!res.ok) throw new Error("Something went wrong!");
+
+        const data = await res.json();
+
+        if (data.incomplete_results)
+          throw new Error("Something went wrong with github!");
+
+        setFetchedUsers(data.items);
+      } catch (err) {
+        // Ignore abort errors
+        if (err.name !== "AbortError") {
           console.log(err.message);
         }
       }
-      fetchUsers();
-    },
-    [query],
-  );
+    }
+
+    fetchUsers();
+
+    // cleanup → abort previous request
+    return () => controller.abort();
+  }, [query, setFetchedUsers]);
 
   function handleUserSelection(id) {
     setSelecteduser(id);
@@ -88,8 +103,22 @@ function StartScreen({ dispatch }) {
           </div>
         </div>
       ) : (
-        <SelectedUser userId={selectedUser} dispatch={dispatch} />
+        <>
+          <SelectedUser
+            userId={selectedUser}
+            selectedUserDetals={selectedUserDetals}
+            setSelecteduserDetals={setSelecteduserDetals}
+          />
+          <button
+            className={styles.startBtn}
+            onClick={() => dispatch({ type: "startQuiz" })}
+          >
+            Start Quiz
+          </button>
+        </>
       )}
+
+      <FinishScreen isSimple={true} />
     </div>
   );
 }

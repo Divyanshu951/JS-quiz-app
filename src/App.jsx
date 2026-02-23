@@ -1,10 +1,11 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import Header from "./Header";
 import Question from "./Question";
 import Hint from "./Hint";
 import questions from "./data";
 import Timer from "./Timer";
 import StartScreen from "./StartScreen";
+import SelectedUser from "./SelectedUser";
 import FinishScreen from "./FinishScreen";
 
 const initialState = {
@@ -20,6 +21,13 @@ const initialState = {
   hintExpanded: false,
 };
 
+const totalPoints = questions.reduce(
+  (total, question) => total + question.points,
+  0,
+);
+
+console.log(totalPoints);
+
 function reducer(state, action) {
   switch (action.type) {
     case "nextQuestion":
@@ -29,6 +37,7 @@ function reducer(state, action) {
         selectionAllowed: true,
         answer: null,
         hintExpanded: false,
+        status: state.index === questions.length - 1 ? "finish" : state.status,
       };
     case "setAnswer": {
       if (!state.selectionAllowed) return state;
@@ -61,6 +70,10 @@ function reducer(state, action) {
 }
 
 function App() {
+  const [query, setQuery] = useState("");
+  const [fetchedUsers, setFetchedUsers] = useState([]);
+  const [selectedUserDetals, setSelecteduserDetals] = useState({});
+
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     questions,
@@ -77,8 +90,26 @@ function App() {
   const questionsCount = questions.length;
   return (
     <>
-      {status === "ready" && <StartScreen dispatch={dispatch} />}
-      {status === "finish" && <FinishScreen />}
+      {status === "ready" && (
+        <>
+          <StartScreen
+            dispatch={dispatch}
+            query={query}
+            fetchedUsers={fetchedUsers}
+            setQuery={setQuery}
+            setFetchedUsers={setFetchedUsers}
+            selectedUserDetals={selectedUserDetals}
+            setSelecteduserDetals={setSelecteduserDetals}
+          />
+        </>
+      )}
+      {status === "finish" && (
+        <FinishScreen
+          points={points}
+          selectedUserDetals={selectedUserDetals}
+          totalPoints={totalPoints}
+        />
+      )}
       {status === "ongoing" && (
         <>
           <div className="main-container">
@@ -121,6 +152,13 @@ function App() {
                 hintExpanded={hintExpanded}
                 dispatch={dispatch}
               />
+              <div style={{ position: "fixed", bottom: "30px", left: "30px" }}>
+                <SelectedUser
+                  userId={selectedUserDetals.login}
+                  selectedUserDetals={selectedUserDetals}
+                  setSelecteduserDetals={setSelecteduserDetals}
+                />
+              </div>
             </main>
           </div>
         </>

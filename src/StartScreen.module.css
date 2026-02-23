@@ -104,3 +104,18 @@ html {
   flex-direction: column;
   gap: 5px;
 }
+
+.startBtn {
+  margin-top: 15px;
+  padding: 12px 24px;
+  border-radius: 100px;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    opacity 0.2s;
+}

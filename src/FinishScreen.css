@@ -1,0 +1,362 @@
+/* --- Global Container --- */
+.finish-screen-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* Allows stacking on smaller screens */
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 3rem 1.5rem;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  background-image: linear-gradient(
+    rgb(145, 140, 127) 0%,
+    rgb(103, 109, 146) 50%,
+    rgb(6, 62, 128) 100%
+  );
+  color: #fafafa;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- Shared Card Styles (Shadcn Card Component) --- */
+.result-card,
+.leaderboard-container {
+  background-color: #09090b;
+  border: 1px solid #27272a; /* Zinc-800 */
+  border-radius: 0.5rem; /* 8px */
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  padding: 2rem;
+  width: 100%;
+}
+
+/* --- Result Card Specifics --- */
+.result-card {
+  max-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-card h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #fafafa;
+}
+
+.user-avatar-large {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  /* Replaced the thick blue border with a subtle gray one */
+  border: 1px solid #27272a;
+  margin: 1.5rem 0;
+  object-fit: cover;
+}
+
+.result-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.score-text {
+  font-size: 1rem;
+  color: #a1a1aa; /* Zinc-400 */
+  margin: 0.5rem 0;
+}
+
+.score-text strong {
+  color: #fafafa;
+}
+
+.percentage-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fafafa; /* Moved away from neon green for a cleaner look */
+  margin: 0;
+}
+
+/* --- Leaderboard Specifics --- */
+.leaderboard-container {
+  max-width: 600px;
+}
+
+.leaderboard-container h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  color: #fafafa;
+  border-bottom: 1px solid #27272a;
+  padding-bottom: 1rem;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  padding: 2rem 0;
+}
+
+.error-text {
+  color: #ef4444; /* Red-500 */
+}
+
+/* --- Leaderboard List & Items --- */
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.leaderboard-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem; /* 6px */
+  border: 1px solid transparent;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  background-color: #27272a;
+}
+
+.leaderboard-item:hover {
+  background-color: #27272a; /* Zinc-800 hover state */
+}
+
+/* Highlight the specific score the user just achieved */
+.current-user-highlight {
+  background-color: #fafafa;
+  color: #09090b;
+}
+
+/* Specific text overrides for the highlighted row to remain legible */
+.current-user-highlight .user-name,
+.current-user-highlight .user-score,
+.current-user-highlight .user-score strong {
+  color: #09090b;
+}
+.current-user-highlight .rank,
+.current-user-highlight .user-username,
+.current-user-highlight .user-username a {
+  color: #52525b; /* Zinc-600 */
+}
+
+/* --- User Row Content --- */
+.rank-and-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rank {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  width: 24px;
+}
+
+.user-avatar-small {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #27272a;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fafafa;
+}
+
+.user-username {
+  font-size: 0.75rem;
+  color: #a1a1aa;
+}
+
+.user-username a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.user-username a:hover {
+  text-decoration: underline;
+}
+
+.user-score {
+  font-size: 0.875rem;
+  color: #a1a1aa;
+}
+
+.user-score strong {
+  color: #fafafa;
+  font-weight: 600;
+}
+
+/* ==========================================
+   PODIUM STYLES (Added to your CSS)
+   ========================================== */
+.podium-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+  min-height: 200px;
+}
+
+.podium-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+
+.podium-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #27272a;
+  margin-bottom: 0.5rem;
+  object-fit: cover;
+  background-color: #09090b;
+}
+
+.podium-name {
+  font-size: 0.75rem;
+  color: #fafafa;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.podium-score {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #a1a1aa;
+  margin-bottom: 0.5rem;
+}
+
+.podium-block {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 0.5rem;
+  font-size: 1.5rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border: 1px solid #27272a;
+  border-bottom: none;
+}
+
+/* Shadcn-inspired Podium Colors & Heights */
+.step-1 .podium-block {
+  height: 100px;
+  background-color: #27272a;
+} /* Zinc-800 */
+.step-1 .podium-avatar {
+  border-color: #fbbf24;
+  width: 64px;
+  height: 64px;
+} /* Gold border */
+.step-2 .podium-block {
+  height: 75px;
+  background-color: #18181b;
+} /* Zinc-900 */
+.step-3 .podium-block {
+  height: 50px;
+  background-color: #09090b;
+} /* Zinc-950 */
+
+.mt-top {
+  margin-top: 1rem;
+}
+
+/* ==========================================
+   SIMPLE MODE STYLES (Bottom Quiz Bar)
+   ========================================== */
+.simple-leaderboard {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background-color: #09090b; /* Dark bar to contrast your gradient */
+  padding: 0.75rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fafafa;
+  flex-wrap: wrap;
+  border: 1px solid #27272a;
+}
+
+.simple-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a1a1aa;
+}
+
+.simple-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #18181b;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px; /* Pill shape */
+  border: 1px solid #27272a;
+}
+
+.simple-rank {
+  font-weight: bold;
+  font-size: 0.75rem;
+  color: #fbbf24;
+}
+.simple-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.simple-name {
+  font-size: 0.75rem;
+}
+.simple-score {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #a1a1aa;
+}
+.simple-text {
+  font-size: 0.875rem;
+  color: #a1a1aa;
+}

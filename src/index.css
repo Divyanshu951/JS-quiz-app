@@ -21,6 +21,7 @@
 
 body {
   font-family: "Google Sans Flex", sans-serif;
+  height: 100vh;
 }
 
 .main-container {
