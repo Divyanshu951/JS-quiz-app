@@ -70,7 +70,7 @@ function StartScreen({
       <header>
         <h1 className={styles.mainHeading}>JavaScript Quiz</h1>
         <div className={styles.topicContainer}>
-          Topics in this quiz:
+          <p>Topics in this quiz:</p>
           <ul className={styles.topics}>
             {topics.map((topic) => (
               <li key={topic}>{topic}</li>

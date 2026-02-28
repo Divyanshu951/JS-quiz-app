@@ -27,6 +27,8 @@ function FinishScreen({
           const getRes = await fetch(API_URL);
           if (!getRes.ok) throw new Error("Failed to fetch leaderboard.");
           const data = await getRes.json();
+          // console.log(data);
+
           const sorted = data.sort((a, b) => b.points - a.points);
           setLeaderboard(sorted);
         } catch (err) {

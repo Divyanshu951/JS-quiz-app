@@ -119,3 +119,22 @@ html {
     transform 0.1s,
     opacity 0.2s;
 }
+
+@media (max-width: 480px) {
+  .mainContainer {
+    padding: 10px;
+  }
+
+  .mainHeading {
+    font-size: 3rem;
+  }
+
+  .topicContainer {
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .simple-leaderboard {
+    flex-direction: column;
+  }
+}

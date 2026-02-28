@@ -464,3 +464,10 @@
   background: #27272a;
   border-radius: 10px;
 }
+
+@media (max-width: 480px) {
+  .simple-leaderboard {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
