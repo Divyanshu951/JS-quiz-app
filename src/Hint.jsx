@@ -1,6 +1,12 @@
+import { useQuiz } from "./Contexts/quizContext";
 import styles from "./Hint.module.css";
 
-function Hint({ hint, hintExpanded, dispatch }) {
+function Hint() {
+  const {
+    state: { hintExpanded, questions, index },
+    dispatch,
+  } = useQuiz();
+
   return (
     <div className={styles.hintContainer}>
       <button
@@ -19,7 +25,7 @@ function Hint({ hint, hintExpanded, dispatch }) {
         className={`${styles.hint} ${hintExpanded ? styles.hintVisible : ""}`}
       >
         <p>
-          <i className="fa-regular fa-lightbulb"></i> {hint}
+          <i className="fa-regular fa-lightbulb"></i> {questions.at(index).hint}
         </p>
       </div>
     </div>

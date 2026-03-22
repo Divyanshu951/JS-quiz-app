@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./FinishScreen.css";
+import { useQuiz } from "./Contexts/quizContext";
 const API_URL_ENV = import.meta.env.VITE_API_URL;
 
 const API_URL = `${API_URL_ENV}/leaderboard`;
 
-function FinishScreen({
-  points,
-  selectedUserDetals,
-  totalPoints,
-  isSimple = false,
-}) {
+function FinishScreen({ isSimple = false }) {
+  const {
+    state: { points, questions },
+    selectedUserDetails,
+  } = useQuiz();
+
   const [leaderboard, setLeaderboard] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +19,11 @@ function FinishScreen({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hasSubmitted = useRef(false);
+
+  const totalPoints = questions.reduce(
+    (total, question) => total + question.points,
+    0,
+  );
 
   useEffect(() => {
     if (isSimple) {
@@ -41,7 +47,7 @@ function FinishScreen({
       return;
     }
 
-    if (!selectedUserDetals) {
+    if (!selectedUserDetails) {
       setError("No user details provided.");
       setIsLoading(false);
       return;
@@ -54,13 +60,13 @@ function FinishScreen({
         setIsLoading(true);
 
         const newResult = {
-          githubId: selectedUserDetals.id,
-          username: selectedUserDetals.login,
-          name: selectedUserDetals.name || selectedUserDetals.login,
-          avatar: selectedUserDetals.avatar_url,
+          githubId: selectedUserDetails.id,
+          username: selectedUserDetails.login,
+          name: selectedUserDetails.name || selectedUserDetails.login,
+          avatar: selectedUserDetails.avatar_url,
           points: points,
           totalPoints: totalPoints,
-          html_url: selectedUserDetals.html_url,
+          html_url: selectedUserDetails.html_url,
           percentage: Number(percentage.toFixed(2)),
           timestamp: new Date().toISOString(),
         };
@@ -87,7 +93,7 @@ function FinishScreen({
     };
 
     syncLeaderboard();
-  }, [isSimple, points, selectedUserDetals, totalPoints]);
+  }, [isSimple, points, selectedUserDetails, totalPoints]);
 
   // ==========================================
   // RENDER: Simple Mode (Bottom Bar + Modal)
@@ -201,11 +207,11 @@ function FinishScreen({
       <div className="result-card">
         <h2>Quiz Complete! 🎉</h2>
         <img
-          src={selectedUserDetals?.avatar_url}
+          src={selectedUserDetails?.avatar_url}
           alt="avatar"
           className="user-avatar-large"
         />
-        <h3>{selectedUserDetals?.name || selectedUserDetals?.login}</h3>
+        <h3>{selectedUserDetails?.name || selectedUserDetails?.login}</h3>
         <p className="score-text">
           You scored <strong>{points}</strong> out of{" "}
           <strong>{totalPoints}</strong>
@@ -269,7 +275,7 @@ function FinishScreen({
               {restOfLeaderboard.map((user, index) => {
                 const actualRank = index + 4;
                 const isCurrentUser =
-                  user.githubId === selectedUserDetals?.id &&
+                  user.githubId === selectedUserDetails?.id &&
                   user.points === points;
 
                 return (

@@ -1,7 +1,33 @@
 import { useEffect } from "react";
 import styles from "./SelectedUser.module.css";
+import { useQuiz } from "./Contexts/quizContext";
 
-function SelectedUser({ userId, selectedUserDetals, setSelecteduserDetals }) {
+function SelectedUser({ userId }) {
+  const { selectedUserDetails, onSelectedUserDetails } = useQuiz();
+  //   const initialState = {
+  //   // ready - homeScreen, start: - ongoing ,finish - result page
+  //   questions,
+  //   status: "ready",
+  //   selectionAllowed: true,
+  //   answer: null,
+  //   index: 0,
+  //   correctScore: 0,
+  //   points: 0,
+  //   wrongScore: 0,
+  //   hintExpanded: false,
+  // };
+
+  //  value={{
+  //         state,
+  //         dispatch,
+  //         query,
+  //         onQuery: setQuery,
+  //         fetchedUsers,
+  //         onFetchedUsers: setFetchedUsers,
+  //         selectedUserDetails,
+  //         onSelectedUserDetails: onSelectedUserDetails,
+  //       }}
+
   useEffect(
     function () {
       async function fetchUsers() {
@@ -12,35 +38,35 @@ function SelectedUser({ userId, selectedUserDetals, setSelecteduserDetals }) {
           const data = await res.json();
           if (data.incomplete_results)
             throw new Error("Something went wrong with github!");
-          setSelecteduserDetals({ ...data });
+          onSelectedUserDetails({ ...data });
         } catch (err) {
           console.log(err.message);
         }
       }
       fetchUsers();
     },
-    [userId, setSelecteduserDetals],
+    [userId, onSelectedUserDetails],
   );
 
   return (
     <div className={styles.userContainer}>
       <div className={styles.userCard}>
         <img
-          src={selectedUserDetals.avatar_url}
-          alt={`${selectedUserDetals.login} avatar`}
+          src={selectedUserDetails.avatar_url}
+          alt={`${selectedUserDetails.login} avatar`}
           className={styles.avatar}
         />
         <div className={styles.userInfo}>
-          <h3 className={styles.name}>{selectedUserDetals.name}</h3>
+          <h3 className={styles.name}>{selectedUserDetails.name}</h3>
           <a
-            href={selectedUserDetals.html_url}
+            href={selectedUserDetails.html_url}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.username}
           >
-            @{selectedUserDetals.login}
+            @{selectedUserDetails.login}
           </a>
-          <p className={styles.bio}>{selectedUserDetals.bio}</p>
+          <p className={styles.bio}>{selectedUserDetails.bio}</p>
         </div>
       </div>
     </div>

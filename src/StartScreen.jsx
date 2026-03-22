@@ -3,6 +3,7 @@ import styles from "./StartScreen.module.css";
 import User from "./User";
 import SelectedUser from "./SelectedUser";
 import FinishScreen from "./FinishScreen";
+import { useQuiz } from "./Contexts/quizContext";
 
 //https://api.github.com/search/users?q=QUERY
 
@@ -16,16 +17,9 @@ const topics = [
   "polyfill",
 ];
 
-function StartScreen({
-  dispatch,
-  query,
-  fetchedUsers,
-  setFetchedUsers,
-  setQuery,
-  setSelecteduserDetals,
-  selectedUserDetals,
-}) {
-  const [selectedUser, setSelecteduser] = useState(null);
+function StartScreen() {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const { dispatch, query, fetchedUsers, onFetchedUsers, onQuery } = useQuiz();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -46,7 +40,7 @@ function StartScreen({
         if (data.incomplete_results)
           throw new Error("Something went wrong with github!");
 
-        setFetchedUsers(data.items);
+        onFetchedUsers(data.items);
       } catch (err) {
         // Ignore abort errors
         if (err.name !== "AbortError") {
@@ -59,10 +53,10 @@ function StartScreen({
 
     // cleanup → abort previous request
     return () => controller.abort();
-  }, [query, setFetchedUsers]);
+  }, [query, onFetchedUsers]);
 
   function handleUserSelection(id) {
-    setSelecteduser(id);
+    setSelectedUser(id);
   }
 
   return (
@@ -86,7 +80,7 @@ function StartScreen({
             className={styles.input}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => onQuery(e.target.value)}
           />
           <div className={styles.resultTab}>
             {fetchedUsers.map((user, i) =>
@@ -104,11 +98,7 @@ function StartScreen({
         </div>
       ) : (
         <>
-          <SelectedUser
-            userId={selectedUser}
-            selectedUserDetals={selectedUserDetals}
-            setSelecteduserDetals={setSelecteduserDetals}
-          />
+          <SelectedUser userId={selectedUser} />
           <button
             className={styles.startBtn}
             onClick={() => dispatch({ type: "startQuiz" })}

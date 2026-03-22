@@ -1,11 +1,16 @@
 import React from "react";
 import styles from "./Header.module.css";
+import { useQuiz } from "./Contexts/quizContext";
 
-function Header({ totalQuestion, current, correctScore, wrongScore }) {
+function Header() {
+  const {
+    state: { questions, index: current, correctScore, wrongScore },
+  } = useQuiz();
+
   return (
     <div className={styles.mainHeader}>
       <div className={styles.barContainer}>
-        {Array.from({ length: totalQuestion }).map((_, index) => (
+        {Array.from({ length: questions.length }).map((_, index) => (
           <div
             key={index}
             className={`${styles.bar} ${current >= index ? styles.barDone : ""} ${current === index ? styles.barActive : ""}`}
