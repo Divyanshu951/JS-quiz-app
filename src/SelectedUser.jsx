@@ -1,32 +1,9 @@
 import { useEffect } from "react";
 import styles from "./SelectedUser.module.css";
-import { useQuiz } from "./Contexts/quizContext";
+import { useUser } from "./Contexts/UserContext";
 
 function SelectedUser({ userId }) {
-  const { selectedUserDetails, onSelectedUserDetails } = useQuiz();
-  //   const initialState = {
-  //   // ready - homeScreen, start: - ongoing ,finish - result page
-  //   questions,
-  //   status: "ready",
-  //   selectionAllowed: true,
-  //   answer: null,
-  //   index: 0,
-  //   correctScore: 0,
-  //   points: 0,
-  //   wrongScore: 0,
-  //   hintExpanded: false,
-  // };
-
-  //  value={{
-  //         state,
-  //         dispatch,
-  //         query,
-  //         onQuery: setQuery,
-  //         fetchedUsers,
-  //         onFetchedUsers: setFetchedUsers,
-  //         selectedUserDetails,
-  //         onSelectedUserDetails: onSelectedUserDetails,
-  //       }}
+  const { selectedUserDetails, onSelectedUserDetails } = useUser();
 
   useEffect(
     function () {

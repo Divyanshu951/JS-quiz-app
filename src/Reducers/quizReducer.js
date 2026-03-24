@@ -1,4 +1,4 @@
-import questions from "./data";
+import questions from "../data";
 
 export const initialState = {
   // ready - homeScreen, start: - ongoing ,finish - result page

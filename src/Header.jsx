@@ -1,6 +1,5 @@
-import React from "react";
 import styles from "./Header.module.css";
-import { useQuiz } from "./Contexts/quizContext";
+import { useQuiz } from "./Contexts/QuizContext";
 
 function Header() {
   const {

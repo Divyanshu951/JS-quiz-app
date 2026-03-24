@@ -1,6 +1,13 @@
 import styles from "./Option.module.css";
+import { useQuiz } from "./Contexts/QuizContext";
 
-function Option({ question, option, answer, i, dispatch }) {
+function Option({ option, i }) {
+  const {
+    state: { answer, questions, index },
+    dispatch,
+  } = useQuiz();
+
+  const question = questions.at(index);
   const isAnswered = answer !== null;
   const isCorrect = i === question.correctAnswer;
   const isSelected = i === answer;
@@ -45,8 +52,6 @@ function Option({ question, option, answer, i, dispatch }) {
         </span>{" "}
         <div>
           <p className={styles.text}>{formatText(option.text, styles)}</p>
-
-          {/* Message logic */}
 
           {isAnswered && isCorrect && (
             <p className={styles.disc}>

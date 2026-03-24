@@ -1,4 +1,4 @@
-import { useQuiz } from "./Contexts/quizContext";
+import { useQuiz } from "./Contexts/QuizContext";
 import styles from "./Hint.module.css";
 
 function Hint() {

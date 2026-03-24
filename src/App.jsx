@@ -5,7 +5,7 @@ import Timer from "./Timer";
 import StartScreen from "./StartScreen";
 import SelectedUser from "./SelectedUser";
 import FinishScreen from "./FinishScreen";
-import { useQuiz } from "./Contexts/quizContext";
+import { useQuiz } from "./Contexts/QuizContext";
 
 function App() {
   const {

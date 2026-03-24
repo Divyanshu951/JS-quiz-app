@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./FinishScreen.css";
-import { useQuiz } from "./Contexts/quizContext";
+import { useQuiz } from "./Contexts/QuizContext";
+import { useUser } from "./Contexts/UserContext";
 const API_URL_ENV = import.meta.env.VITE_API_URL;
 
 const API_URL = `${API_URL_ENV}/leaderboard`;
@@ -8,14 +9,14 @@ const API_URL = `${API_URL_ENV}/leaderboard`;
 function FinishScreen({ isSimple = false }) {
   const {
     state: { points, questions },
-    selectedUserDetails,
   } = useQuiz();
+  const { selectedUserDetails } = useUser();
 
   const [leaderboard, setLeaderboard] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // NEW STATE: Tracks if the modal is open in simple mode
+  // Tracks if the modal is open in simple mode
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hasSubmitted = useRef(false);
@@ -33,7 +34,6 @@ function FinishScreen({ isSimple = false }) {
           const getRes = await fetch(API_URL);
           if (!getRes.ok) throw new Error("Failed to fetch leaderboard.");
           const data = await getRes.json();
-          // console.log(data);
 
           const sorted = data.sort((a, b) => b.points - a.points);
           setLeaderboard(sorted);
@@ -145,10 +145,9 @@ function FinishScreen({ isSimple = false }) {
             ))}
         </div>
 
-        {/* The Modal Overlay (Only renders if isModalOpen is true) */}
+        {/* The Modal Overlay */}
         {isModalOpen && (
           <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-            {/* Modal Content Box (stopPropagation prevents closing when clicking inside the box) */}
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
                 <h3>🏆 Top 10 Leaderboard</h3>
@@ -162,7 +161,6 @@ function FinishScreen({ isSimple = false }) {
 
               <div className="modal-body">
                 <ul className="leaderboard-list">
-                  {/* Slices the top 10 users for the modal */}
                   {leaderboard.slice(0, 10).map((user, index) => (
                     <li key={user.id || index} className="leaderboard-item">
                       <div className="rank-and-user">

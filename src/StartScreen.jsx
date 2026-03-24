@@ -3,9 +3,8 @@ import styles from "./StartScreen.module.css";
 import User from "./User";
 import SelectedUser from "./SelectedUser";
 import FinishScreen from "./FinishScreen";
-import { useQuiz } from "./Contexts/quizContext";
-
-//https://api.github.com/search/users?q=QUERY
+import { useQuiz } from "./Contexts/QuizContext";
+import { useUser } from "./Contexts/UserContext";
 
 const topics = [
   "this",
@@ -19,7 +18,8 @@ const topics = [
 
 function StartScreen() {
   const [selectedUser, setSelectedUser] = useState(null);
-  const { dispatch, query, fetchedUsers, onFetchedUsers, onQuery } = useQuiz();
+  const { dispatch } = useQuiz();
+  const { query, fetchedUsers, onFetchedUsers, onQuery } = useUser();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -42,7 +42,6 @@ function StartScreen() {
 
         onFetchedUsers(data.items);
       } catch (err) {
-        // Ignore abort errors
         if (err.name !== "AbortError") {
           console.log(err.message);
         }
@@ -51,7 +50,6 @@ function StartScreen() {
 
     fetchUsers();
 
-    // cleanup → abort previous request
     return () => controller.abort();
   }, [query, onFetchedUsers]);
 
