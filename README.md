@@ -29,6 +29,7 @@ An interactive JavaScript quiz application built with **React 19** and **Vite**.
 | Icons      | Font Awesome 7                    |
 | Fonts      | Google Sans Flex, Noto Sans Mono  |
 | API        | GitHub Users API, Custom REST API |
+| AI         | Google Gemini API (2.5 Flash / Pro)|
 | Linting    | ESLint 9                          |
 
 ---
@@ -45,8 +46,12 @@ JS-quiz-app/
 │   │   └── UserContext.jsx      # User state provider (GitHub user data)
 │   ├── Reducers/
 │   │   └── quizReducer.js       # Core quiz logic (next, answer, hint, start)
+│   ├── services/
+│   │   └── geminiService.js     # Gemini API integration for AI quiz generation
 │   ├── assets/
 │   ├── App.jsx                  # Main app — routes between screens
+│   ├── AIQuizModal.jsx          # Multi-step AI quiz generation wizard
+│   ├── AIQuizModal.module.css   # AI modal styles
 │   ├── StartScreen.jsx          # Landing page with GitHub user search
 │   ├── FinishScreen.jsx         # Results + global leaderboard
 │   ├── Header.jsx               # Quiz header
@@ -56,7 +61,7 @@ JS-quiz-app/
 │   ├── Timer.jsx                # Per-question countdown timer
 │   ├── User.jsx                 # GitHub user search result card
 │   ├── SelectedUser.jsx         # Displays the selected GitHub profile
-│   ├── data.js                  # All 25 quiz questions
+│   ├── data.js                  # All 25 default quiz questions
 │   ├── index.css                # Global styles
 │   └── main.jsx                 # App entry point
 ├── .env                         # Environment variables (API URL)
@@ -114,12 +119,12 @@ npm run preview
 
 ## 🎮 How It Works
 
-1. **Start Screen** — Enter your GitHub username to search for your profile.
-2. **Select Profile** — Pick your GitHub account from the search results.
-3. **Take the Quiz** — Answer 25 JavaScript questions with hints available.
+1. **Start Screen** — Choose the default quiz or generate a custom AI quiz.
+2. **GitHub Login** — Search and select your GitHub profile.
+3. **Take the Quiz** — Answer questions with hints and color-coded difficulty.
 4. **Finish Screen** — View your score, percentage, and your rank on the global leaderboard.
 
-### Quiz Topics
+### Default Quiz Topics
 
 | Topic            | Description                                         |
 | ---------------- | --------------------------------------------------- |
@@ -129,6 +134,19 @@ npm run preview
 | `new`            | Constructor functions and object instantiation      |
 | `prototype`      | Prototype chain and inheritance mechanics           |
 | `polyfill`       | Writing backward-compatible feature implementations |
+
+### 🤖 AI Quiz Generation (Beta)
+
+Click **"✨ Generate AI Quiz"** on the start screen to create a custom quiz:
+
+1. **Enter your Gemini API key** — get one free at [aistudio.google.com](https://aistudio.google.com/apikey)
+2. **Choose a model:**
+   - **Gemini 2.5 Flash** — faster generation, free with Gemini Pro pack
+   - **Gemini 2.5 Pro** — smarter output, free with Gemini Ultra pack
+3. **Enter your topics** — comma-separated (e.g., `closures, promises, async/await`)
+4. **Generate** — the AI creates 15 questions (5 easy, 5 medium, 5 hard) following the same quiz format
+
+> Your API key is used in-browser only and is never sent to any server other than Google's Gemini API.
 
 ---
 
