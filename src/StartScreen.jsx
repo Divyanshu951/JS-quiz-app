@@ -3,10 +3,11 @@ import styles from "./StartScreen.module.css";
 import User from "./User";
 import SelectedUser from "./SelectedUser";
 import FinishScreen from "./FinishScreen";
+import AIQuizModal from "./AIQuizModal";
 import { useQuiz } from "./Contexts/QuizContext";
 import { useUser } from "./Contexts/UserContext";
 
-const topics = [
+const defaultTopics = [
   "this",
   "call",
   "apply",
@@ -18,8 +19,15 @@ const topics = [
 
 function StartScreen() {
   const [selectedUser, setSelectedUser] = useState(null);
-  const { dispatch } = useQuiz();
+  const [showAIModal, setShowAIModal] = useState(false);
+  const {
+    state: { questions },
+    dispatch,
+  } = useQuiz();
   const { query, fetchedUsers, onFetchedUsers, onQuery } = useUser();
+
+  // Derive displayed topics from current questions
+  const topics = [...new Set(questions.map((q) => q.topic))];
 
   useEffect(() => {
     const controller = new AbortController();
@@ -69,6 +77,12 @@ function StartScreen() {
             ))}
           </ul>
         </div>
+        <button
+          className={styles.aiBtn}
+          onClick={() => setShowAIModal(true)}
+        >
+          ✨ Generate AI Quiz <span className={styles.betaTag}>BETA</span>
+        </button>
       </header>
 
       {!selectedUser ? (
@@ -107,6 +121,7 @@ function StartScreen() {
       )}
 
       <FinishScreen isSimple={true} />
+      {showAIModal && <AIQuizModal onClose={() => setShowAIModal(false)} />}
     </div>
   );
 }

@@ -58,6 +58,12 @@ export function reducer(state, action) {
         ...state,
         status: "ongoing",
       };
+    case "loadAIQuestions":
+      return {
+        ...initialState,
+        questions: action.payLoad,
+        status: "ready",
+      };
     default:
       return state;
   }

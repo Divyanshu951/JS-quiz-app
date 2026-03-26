@@ -7,6 +7,7 @@ An interactive JavaScript quiz application built with **React 19** and **Vite**.
 ## ✨ Features
 
 - **25 curated questions** across three difficulty tiers — Easy (10 pts), Medium (20 pts), and Hard (30 pts)
+- **AI Custom Quiz Generation** — provide topics and generate a custom 15-question quiz using **Gemini 2.5 Flash** or **Gemini 2.5 Pro**
 - **GitHub user integration** — search and select your GitHub profile before starting
 - **Hints & explanations** — each question comes with a hint and a detailed post-answer explanation
 - **Point-based scoring** with real-time tracking
